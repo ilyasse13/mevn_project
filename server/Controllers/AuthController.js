@@ -22,9 +22,9 @@ export const registerUser = async (req, res) => {
     if (existingUser) {
       return res.status(400).json({ message: 'User already exists' });
     }
-
+    const image=null
     // Create new user
-    const user = new User({ name, email, password, country });
+    const user = new User({ name, email, password, country,image });
     await user.save();
 
     // Generate JWT token

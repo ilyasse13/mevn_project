@@ -32,9 +32,9 @@
                 class="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                 <span class="absolute -inset-1.5" />
                 <span class="sr-only">Open user menu</span>
-                <img class="h-12 rounded-full"
-                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                  alt="" />
+                <img v-if="user?.image" class="h-14 w-16 rounded-full" :src="`http://localhost:5000${user.image}`" alt="User Image" />
+
+                <UserIcon v-else class="h-12 w-12 text-gray-100" />
               </MenuButton>
             </div>
             <transition enter-active-class="transition ease-out duration-100"
@@ -44,7 +44,7 @@
               <MenuItems
                 class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                 <MenuItem v-slot="{ active }">
-                <a href="#" :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">Your
+                <a href="/profile" :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">Your
                   Profile</a>
                 </MenuItem>
 
@@ -72,29 +72,34 @@
 
 <script setup>
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { Bars3Icon, BellIcon, UserIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
-import axiosInstance from '@/api/axios'; // Adjust the path if needed
+import axiosInstance from '@/api/axios';
+import { ref } from 'vue'; 
+
+
+// Adjust the path if needed
 
 const router = useRouter();
-const store=useStore();
+const store = useStore();
+const user = ref(store.state.user);
 
 const logout = async () => {
   try {
     // Perform the logout request to your backend
-   const response = await axiosInstance.post('/auth/logout'); // Adjust endpoint as needed
+    const response = await axiosInstance.post('/auth/logout'); // Adjust endpoint as needed
 
-    if (response.status===200) {
+    if (response.status === 200) {
       store.dispatch('logout');
 
-    // Optionally clear user data from localStorage
-    localStorage.removeItem('authToken'); // Example: Clear auth token
+      // Optionally clear user data from localStorage
+      localStorage.removeItem('authToken'); // Example: Clear auth token
 
-    
-    router.push('/login'); // Adjust the route as needed 
+
+      router.push('/login'); // Adjust the route as needed 
     }
-    
+
   } catch (error) {
     console.error('Logout failed:', error);
     // Handle error (e.g., show notification)

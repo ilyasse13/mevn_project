@@ -9,6 +9,7 @@ import cors from 'cors';
 import Memrouter from './routes/MemberRoutes.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import Userroute from './routes/UserRoutes.js';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -40,7 +41,8 @@ connectDB(); // Call the function to establish a database connection
 // Use routes
 app.use('/api/auth', authRoutes);
 app.use('/api/recipes', recipeRoutes);
-app.use('/api', Memrouter); // Correct route for members
+app.use('/api', Memrouter); 
+app.use('/api',Userroute);
 
 // Root route
 app.get('/', (req, res) => {

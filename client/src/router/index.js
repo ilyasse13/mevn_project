@@ -13,6 +13,7 @@ import Members from '@/views/Members.vue';
 import CreateRecipe from '@/views/createRecipe.vue';
 import Recipe from '@/views/Recipe.vue';
 import store from '@/store';
+import UpdateProfile from '@/views/UpdateProfile.vue';
 
 const routes = [
   {
@@ -92,6 +93,13 @@ const routes = [
         name: 'Recipe',
         meta: { requiresAuth: true },
         component: Recipe,
+      },
+      {
+        path: '/update-profile',
+        name: 'UpdateProfile',
+        meta: { requiresAuth: true },
+        component: UpdateProfile,
+
       }
     ],
   },
